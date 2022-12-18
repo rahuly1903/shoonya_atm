@@ -44,7 +44,7 @@ var NorenRestApi = function (params) {
   };
 
   axios.interceptors.request.use((req) => {
-    console.log(`${req.method} ${req.url} ${req.data}`);
+    // console.log(`${req.method} ${req.url} ${req.data}`); // commented by rahul
     // Important: request interceptors **must** return the request.
     return req;
   });
@@ -62,18 +62,18 @@ var NorenRestApi = function (params) {
       }
     },
     (error) => {
-      console.log(error);
+      // console.log(error.response.data);
       let errorObj = {};
 
       if (error.response) {
-        //    errorObj.status = error.response.status;
-        //    errorObj.message = error.response.statusText;
+        errorObj.status = error.response.data.stat;
+        errorObj.message = error.response.data.emsg;
+        return error.response.data;
       } else {
         errorObj.status = 500;
         errorObj.message = "Error";
+        return Promise.reject(errorObj);
       }
-
-      return Promise.reject(errorObj);
     }
   );
 
@@ -175,8 +175,51 @@ var NorenRestApi = function (params) {
     values["uid"] = self.__username;
     values["exch"] = exchange;
     values["token"] = token;
+    console.log(values, self.__susertoken);
 
     let reply = post_request("getquotes", values, self.__susertoken);
+
+    // console
+
+    return reply;
+  };
+
+  /**
+   * Description //Custom Made
+   * @method get_option_chain
+   * @param {string} exchange
+   * @param {string} tradingsymbol
+   * @param {string} strikeprice
+   * @param {string} count
+   */
+  self.get_option_chain = function (
+    exchange,
+    tradingsymbol,
+    strikeprice,
+    count
+  ) {
+    let values = {};
+    values["uid"] = self.__username;
+    values["exch"] = exchange;
+    values["tsym"] = tradingsymbol;
+    values["strprc"] = strikeprice;
+    values["cnt"] = count;
+    let reply = post_request("optionchain", values, self.__susertoken);
+    return reply;
+  };
+  /**
+   * Description //Custom Made
+   * @method get_single_order_history
+   * @param {string} exchange
+   * @param {string} tradingsymbol
+   * @param {string} strikeprice
+   * @param {string} count
+   */
+  self.get_single_order_history = function (orderno) {
+    let values = {};
+    values["uid"] = self.__username;
+    values["norenordno"] = orderno;
+    let reply = post_request("singleorderhistory", values, self.__susertoken);
     return reply;
   };
 
