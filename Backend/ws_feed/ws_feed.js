@@ -1,3 +1,4 @@
+const shoonay_api = require("../middleware/shoonya_api");
 const WSS_feed = (wss) => {
   wss.on("connection", (ws) => {
     let instrument = "";
@@ -8,7 +9,7 @@ const WSS_feed = (wss) => {
 
     function open(data) {
       let instruments = instrument;
-      api.subscribe(instruments);
+      shoonay_api.subscribe(instruments);
       console.log("subsribing to :: ", instruments);
     }
     params = {
@@ -17,7 +18,7 @@ const WSS_feed = (wss) => {
     };
     ws.on("message", (message) => {
       instrument = message;
-      api.start_websocket(params);
+      shoonay_api.start_websocket(params);
       console.log("received: %s", message);
     });
   });
