@@ -216,9 +216,12 @@ var NorenRestApi = function (params) {
    * @param {string} count
    */
   self.get_single_order_history = function (orderno) {
+    console.log("get_single_order_history", typeof orderno, orderno);
+
     let values = {};
     values["uid"] = self.__username;
-    values["norenordno"] = orderno;
+    values["norenordno"] = orderno.toString();
+    console.log(values, self.__susertoken);
     let reply = post_request("singleorderhistory", values, self.__susertoken);
     return reply;
   };

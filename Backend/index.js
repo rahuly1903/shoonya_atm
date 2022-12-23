@@ -3,18 +3,13 @@ const express = require("express");
 const http = require("http");
 const app = express();
 const server = http.createServer(app);
-const WS = require("ws");
+
 const expressLayouts = require("express-ejs-layouts");
 const cors = require("cors");
 
-const wss = new WS.Server({ server });
 const router = require("./routers/routers");
-// const wss_feed = require("./ws_feed/ws_feed");
 const cron_atm = require("./corn_operation/operation");
 const port = process.env.PORT || 4100;
-
-// for wss live feed
-// wss_feed(wss);
 
 app.use(cors());
 app.use("/finvasia", express.static("public"));

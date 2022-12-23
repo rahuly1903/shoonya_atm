@@ -4,8 +4,17 @@ const fs = require("fs");
 const shoonay_api = require("../middleware/shoonya_api");
 let { authparams } = require("../cred");
 
-router.post("/login", (req, res) => {
-  const twoFA = 787671;
+router.get("/", (req, res) => {
+  res.send({ homepage: "Homepage" });
+});
+
+router.get("/time", (req, res) => {
+  res.send({ homepage: new Date() });
+});
+
+router.get("/login", (req, res) => {
+  const twoFA = req.query.otp;
+
   authparams["twoFA"] = twoFA.toString();
   shoonay_api
     .login(authparams)
@@ -81,7 +90,7 @@ router.get("/", (req, res) => {
   res.render("index");
 });
 
-router.post("/place-sl-order", (req, res) => {
+router.get("/place-sl-order", (req, res) => {
   console.log(req.body);
 
   // place order
@@ -89,13 +98,13 @@ router.post("/place-sl-order", (req, res) => {
     buy_or_sell: "B",
     product_type: "C",
     exchange: "NSE",
-    tradingsymbol: req.body.strike, //"BANKNIFTY08SEP22P28000",
+    tradingsymbol: "INFY-EQ", //"BANKNIFTY08SEP22P28000",
     quantity: 1,
     discloseqty: 0,
     price_type: "SL-LMT",
     retention: "DAY",
-    trigger_price: req.body.triggerPrice,
-    price: req.body.price,
+    trigger_price: "341",
+    price: "342",
     remarks: "my_order_002",
   };
 
@@ -109,6 +118,127 @@ router.post("/place-sl-order", (req, res) => {
     });
 
   res.send({ order: "New order Placed" });
+});
+
+router.get("/order", (req, res) => {
+  const orderNumber = 22122100149782;
+  shoonay_api
+    .get_single_order_history(orderNumber)
+    .then((data) => {
+      res.send({ data });
+    })
+    .catch((e) => {
+      res.send(e);
+    });
+});
+
+router.get("/place-itc-order", (req, res) => {
+  // place order
+  let orderparams = {
+    buy_or_sell: "B",
+    product_type: "C",
+    exchange: "NSE",
+    tradingsymbol: "ITC-EQ",
+    quantity: 1,
+    discloseqty: 0,
+    price_type: "MKT",
+    retention: "DAY",
+    price: 0,
+    remarks: "my_order_002",
+  };
+
+  shoonay_api
+    .place_order(orderparams)
+    .then((reply) => {
+      console.log("Order responce", reply);
+
+      const orderNumber = reply.norenordno;
+      shoonay_api
+        .get_single_order_history(orderNumber.toString())
+        .then((data) => {
+          const { status, avgprc } = data[0];
+          if (status == "COMPLETE") {
+            // Place stoploss to order
+            let stopLossOrderParams = {
+              buy_or_sell: "S",
+              product_type: "C",
+              exchange: "NSE",
+              tradingsymbol: "ITC-EQ",
+              quantity: 1,
+              discloseqty: 0,
+              price_type: "SL-LMT",
+              price: praseFloat(avgprc) - 0.5,
+              trigger_price: praseFloat(avgprc) - 0.4,
+              retention: "DAY",
+              remarks: "my_order_002",
+            };
+            shoonay_api
+              .place_order(stopLossOrderParams)
+              .then((reply) => {
+                console.log("StopLoss responce", reply);
+                res.send({ "StopLoss responce": reply });
+              })
+              .catch((e) => {
+                res.send({ e: "StopLoss error" });
+              });
+          }
+        })
+        .catch((e) => {
+          res.send({ e: e + "get_single_order_history error" });
+        });
+    })
+    .catch((e) => {
+      res.send({ e: e + "Place order error" });
+    });
+});
+
+router.get("/orders", (req, res) => {
+  shoonay_api
+    .get_orderbook()
+    .then((reply) => {
+      // console.log("order history", reply);
+      const data = reply.filter((order) => order.trantype == "B");
+      res.send({ data });
+    })
+    .catch((e) => {
+      res.send({ e });
+    });
+});
+
+router.get("/trades", (req, res) => {
+  shoonay_api
+    .get_tradebook()
+    .then((reply) => {
+      console.log("order history", reply);
+      res.send({ reply });
+    })
+    .catch((e) => {
+      res.send({ e });
+    });
+});
+
+router.get("/holdings", (req, res) => {
+  shoonay_api
+    .get_holdings()
+    .then((reply) => {
+      console.log("holding history", reply);
+      res.send({ reply });
+    })
+    .catch((e) => {
+      res.send({ e });
+    });
+});
+
+router.get("/positions", (req, res) => {
+  shoonay_api
+    .get_positions()
+    .then((reply) => {
+      console.log("positions history", reply);
+      res.send({ reply });
+    })
+    .catch((e) => {
+      res.send({ e });
+    });
 });
 
 module.exports = router;

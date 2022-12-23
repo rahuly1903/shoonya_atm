@@ -1,3 +1,11 @@
+/* insert this code in index.js to start continues feed */
+// const WS = require("ws");
+// const wss = new WS.Server({ server });
+// const wss_feed = require("./ws_feed/ws_feed");
+// for wss live feed
+// wss_feed(wss);
+/* insert this code in index.js to start continues feed */
+
 const shoonay_api = require("../middleware/shoonya_api");
 const WSS_feed = (wss) => {
   wss.on("connection", (ws) => {

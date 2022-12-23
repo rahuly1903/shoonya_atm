@@ -2,7 +2,7 @@ const Api = require("../lib/RestApi");
 
 const shoonay_api = new Api({
   susertoken:
-    "c9101c4c355fea2314f0b1be065068b581ec06031ac08723e737c440ac930fcc",
+    "9c1ae5a99fcd39db1839ac4a1f965ecd0ff868673d48c405873f8cb1a015b53d",
   actid: "FA54017",
 });
 

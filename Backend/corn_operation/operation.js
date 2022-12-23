@@ -1,8 +1,12 @@
 const shoonay_api = require("../middleware/shoonya_api");
+const weekly_expiry_date_selection = require("./weekly_expiry_date_selection");
+const node_cron = require("node-cron");
+let niftyPrice = "";
 
 function operation() {
   function receiveQuote(data) {
-    console.log("Quote ::", data);
+    // console.log(data.lp);
+    niftyPrice = data.lp;
   }
 
   function receiveOrders(data) {
@@ -10,7 +14,7 @@ function operation() {
   }
 
   function open(data) {
-    let instruments = "NSE|22#BSE|500400";
+    let instruments = "NSE|26000";
     shoonay_api.subscribe(instruments);
     console.log("subsribing to :: ", instruments);
   }
@@ -23,4 +27,9 @@ function operation() {
 
   shoonay_api.start_websocket(params);
 }
+
+node_cron.schedule("* * * * *", () => {
+  weekly_expiry_date_selection(4, niftyPrice);
+});
+
 module.exports = operation;
