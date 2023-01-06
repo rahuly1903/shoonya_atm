@@ -18,14 +18,23 @@ weekly_expiry_date_selection = (dayIndex, params) => {
     })
     .toUpperCase();
 
-  const expiray_day = expirayThursday.getDate();
+  const expiray_day =
+    expirayThursday.getDate() < 10
+      ? "0" + expirayThursday.getDate()
+      : expirayThursday.getDate();
   const expiray_year = String(expirayThursday.getFullYear()).slice(2);
+
   const roundOffNifty = nifty_roundoff_price(params);
-  const nifty_weekly_expriy_strick = `NIFTY${expiray_day}${expiray_month}${expiray_year}`;
+  const nifty_weekly_expriy_strick = `NIFTY05${expiray_month}${expiray_year}`;
+  // console.log(nifty_weekly_expriy_strick);
   // const roundOffNifty = params;
   // const nifty_weekly_expriy_strick = "ITC-EQ";
   const localHour = new Date().getHours();
-  const localMinute = new Date().getMinutes();
+  const localMinute =
+    new Date().getMinutes() < 10
+      ? "0" + expirayThursday.getMinutes()
+      : expirayThursday.getMinutes();
+  // return false;
   time_based_entry({
     nifty_weekly_expriy_strick,
     roundOffNifty,

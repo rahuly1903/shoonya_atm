@@ -1,8 +1,11 @@
 const Api = require("../lib/RestApi");
 
+const fs = require("fs");
+
+const token = fs.readFileSync("token.txt", { encoding: "utf8", flag: "r" });
+
 const shoonay_api = new Api({
-  susertoken:
-    "9c1ae5a99fcd39db1839ac4a1f965ecd0ff868673d48c405873f8cb1a015b53d",
+  susertoken: token.toString(),
   actid: "FA54017",
 });
 

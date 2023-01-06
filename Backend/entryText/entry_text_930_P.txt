@@ -1,0 +1,1 @@
+{"product_type":"P","order_id":"23010500440430","order_strike":18000,"order_strike_token":"44419","order_tysm":"NIFTY05JAN23P17900","order_price":"11.55","sl_order_id":"23010500440433","sl_order_price":"12.70","is_stopLoss_hit":true,"number_of_trade":1}

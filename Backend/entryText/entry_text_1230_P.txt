@@ -1,1 +1,1 @@
-{"product_type":"P","order_id":"","order_strike":"NIFTY22DEC22P18200","order_strike_token":"","order_tysm":"","order_price":"","sl_order_id":"","sl_order_price":"","is_stopLoss_hit":false,"number_of_trade":1}
+{"product_type":"P","order_id":"","order_strike":"","order_strike_token":"","order_tysm":"","order_price":"","sl_order_id":"","sl_order_price":"","is_stopLoss_hit":true,"number_of_trade":0}

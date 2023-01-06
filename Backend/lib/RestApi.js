@@ -174,7 +174,7 @@ var NorenRestApi = function (params) {
     let values = {};
     values["uid"] = self.__username;
     values["exch"] = exchange;
-    values["token"] = token;
+    values["token"] = token.toString();
     console.log(values, self.__susertoken);
 
     let reply = post_request("getquotes", values, self.__susertoken);
@@ -262,12 +262,12 @@ var NorenRestApi = function (params) {
     values["trantype"] = order.buy_or_sell;
     values["prd"] = order.product_type;
     values["exch"] = order.exchange;
-    values["tsym"] = order.tradingsymbol;
+    values["tsym"] = order.tradingsymbol.toString();
     values["qty"] = order.quantity.toString();
     values["dscqty"] = order.discloseqty.toString();
     values["prctyp"] = order.price_type;
     values["prc"] = order.price.toString();
-    values["remarks"] = order.remarks;
+    values["remarks"] = order.remarks.toString();
 
     if (order.amo !== undefined) values["ret"] = order.retention;
     else values["ret"] = "DAY";
@@ -317,11 +317,11 @@ var NorenRestApi = function (params) {
     let values = { ordersource: "API" };
     values["uid"] = self.__username;
     values["actid"] = self.__accountid;
-    values["norenordno"] = modifyparams.orderno;
-    values["exch"] = modifyparams.exchange;
-    values["tsym"] = modifyparams.tradingsymbol;
+    values["norenordno"] = modifyparams.orderno.toString();
+    values["exch"] = modifyparams.exchange.toString();
+    values["tsym"] = modifyparams.tradingsymbol.toString();
     values["qty"] = modifyparams.newquantity.toString();
-    values["prctyp"] = modifyparams.newprice_type;
+    values["prctyp"] = modifyparams.newprice_type.toString();
     values["prc"] = modifyparams.newprice.toString();
 
     if (
@@ -343,6 +343,8 @@ var NorenRestApi = function (params) {
     if (modifyparams.bookprofit_price !== undefined) {
       values["bpprc"] = modifyparams.bookprofit_price.toString();
     }
+
+    // console.log(values);
 
     let reply = post_request("modifyorder", values, self.__susertoken);
     return reply;
@@ -475,9 +477,14 @@ var NorenRestApi = function (params) {
       apikey: self.__susertoken,
     };
 
-    web_socket.connect(params, callbacks).then(() => {
-      console.log("ws is connected");
-    });
+    web_socket
+      .connect(params, callbacks)
+      .then(() => {
+        console.log("ws is connected");
+      })
+      .catch((e) => {
+        console.log(e, "ws is not connected");
+      });
   };
 
   self.subscribe = function (instrument, feedtype) {

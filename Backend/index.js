@@ -7,6 +7,9 @@ const server = http.createServer(app);
 const expressLayouts = require("express-ejs-layouts");
 const cors = require("cors");
 
+// mongo database connect
+require("./database/dbConnection");
+
 const router = require("./routers/routers");
 const cron_atm = require("./corn_operation/operation");
 const port = process.env.PORT || 4100;

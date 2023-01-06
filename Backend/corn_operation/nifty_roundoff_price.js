@@ -7,7 +7,7 @@ nifty_roundOff_price = (params) => {
   } else {
     atm_Strike = parseInt(Math.ceil(params / 50)) * 50;
   }
-  console.log(atm_Strike);
+  console.log("nifty_roundoff_price.js", params, atm_Strike);
   return atm_Strike;
 };
 

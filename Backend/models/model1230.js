@@ -4,52 +4,26 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const adminSchema = new Schema(
+const entrySchema = new Schema(
   {
+    entry_date: {
+      type: String,
+      required: true,
+    },
     order_note: {
       type: String,
       required: true,
     },
-    ordernote: {
-      type: String,
-      required: true,
-    },
-    orders_history: [
-      {
-        order_no: {
-          type: Number,
-          required: true,
-        },
-        order_time: {
-          type: String,
-          required: true,
-        },
-        option_name: {
-          type: String,
-          required: true,
-        },
-        buy_sell_type: {
-          type: String,
-          required: true,
-        },
-        qty: {
-          type: Number,
-          required: true,
-        },
-        avg_price: {
-          type: Number,
-          required: true,
-        },
-      },
-    ],
+    call: {},
+    put: {},
   },
   {
     timestamps: true,
   }
 );
 
-const userModel = mongoose.model("Admin", adminSchema);
+const entryModel = mongoose.model("entry_1230", entrySchema);
 
 // console.log(userSchema);
 
-module.exports = userModel;
+module.exports = entryModel;

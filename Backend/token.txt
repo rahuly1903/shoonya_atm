@@ -1,1 +1,1 @@
-{"product_type":"C","order_id":"","order_strike":"NIFTY22DEC22C18200","order_strike_toke":"","order_tysm":"","order_price":"","sl_order_id":"","sl_order_price":"","is_stopLoss_hit":false,"number_of_trade":1}
+f95592ec027ae4e7775d1b19f2d00e5be4edca7b069eb1c98edcf20e1cfa3281
